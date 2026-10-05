@@ -35,6 +35,7 @@ namespace MoviesAdmin.Models
         public int Runtime { get; set; }
 
         [Required]
+        [Display(Prompt = "YYYY MM DD")]
         /* Changed DateTime To DateOnly and re-migrated */
         public DateOnly ReleaseDate { get; set; }
 
