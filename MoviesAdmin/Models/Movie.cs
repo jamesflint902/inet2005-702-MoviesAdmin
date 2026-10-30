@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MoviesAdmin.Models
@@ -14,15 +15,16 @@ namespace MoviesAdmin.Models
         [StringLength(200, MinimumLength = 1)]   // accept 1 - 200 chars
         public string Title { get; set; } = string.Empty;
 
-        [Required]
-        [Display(Prompt = "e.g., Action, Drama, Sci‑Fi")]
-        [StringLength(50, MinimumLength = 1)]   // accept 1 - 50 chars
-        public string Genre { get; set; } = string.Empty;
+        //[Required]
+        //[Display(Prompt = "e.g., Action, Drama, Sci‑Fi")]
+        //[StringLength(50, MinimumLength = 1)]   // accept 1 - 50 chars 
+        // turn into a drop down!!
 
-        [Required]
-        [Display(Prompt = "Rating: G, PG, PG‑13, or R")]
-        [RegularExpression("G|PG|PG-13|R")]  // only received accepted ffromating for rting
-        public string Rating {  get; set; } = string.Empty;
+
+        //[Required]
+        //[Display(Prompt = "Rating: G, PG, PG‑13, or R")]
+        //[RegularExpression("G|PG|PG-13|R")]  // only received accepted ffromating for rting
+        //public string Rating {  get; set; } = string.Empty;
 
         [Required]
         [Display(Prompt = "Write a short summary of the movie")]
@@ -34,13 +36,54 @@ namespace MoviesAdmin.Models
         [Range(1, 51500)]  // runtime up to logest movie ever made 
         public int Runtime { get; set; }
 
+
         [Required]
         [Display(Prompt = "YYYY MM DD")]
         /* Changed DateTime To DateOnly and re-migrated */
         public DateOnly ReleaseDate { get; set; }
 
-   
-        //required property or set to null
+
+
+        // Url to image stored in Azure Storage
+        [Required]
+        public string ImageUrl { get; set; } = string.Empty;
+
+
+
+        //public string ReviewID { get; set; } = string.Empty;
+
+
+
+        // Foreign key to Audience Rating
+        [Required]
+        [Display(Prompt = "Audience Rating")]
+        public int AudienceRatingId { get; set; }
+        
+        //nav prop
+        [ValidateNever]
+        [ScaffoldColumn(false)]
+        public AudienceRating AudienceRating { get; set; } = null!;
+
+
+
+        // Foreign key to Genre
+        [Required]
+        [Display(Prompt = "Genre")]
+        public int GenreId { get; set; }
+
+        //nav prop
+        [ValidateNever]
+        [ScaffoldColumn(false)]
+        public Genre Genre { get; set; } = null!;
+
+
+
+        // Reviews
+
+        //  nav prop
+        [ValidateNever]
+        [ScaffoldColumn(false)]
+        public List<Review> Reviews { get; set; } = new List<Review>();
 
     }
 }

@@ -6,23 +6,34 @@
 
 <h1 class="text-white">Edit</h1>
 
-<h4 class="text-white">Movie</h4>
+@* <h4 class="text-white">Movie</h4> *@
 
 <hr class="border-light" />
 
 
 <div class="p-3 bg-dark text-white rounded">
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+
+    <div class="col-md-5">
+
+      <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ImageUrl" />
+
             <div class="mb-3">
                 <label asp-for="Title" class="form-label text-white fw-bold"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="mb-3">
+            
+                <div class="mb-3">
+                    <img src="@Model.ImageUrl" alt="@Model.Title" class="w-25" />
+                </div>
+
+
+            @* <div class="mb-3">
                 <label asp-for="Genre" class="form-label text-white fw-bold"></label>
                 <input asp-for="Genre" class="form-control" />
                 <span asp-validation-for="Genre" class="text-danger"></span>
@@ -30,15 +41,41 @@
             <div class="mb-3">
                 <label asp-for="Rating" class="form-label text-white fw-bold"></label>
                 <input asp-for="Rating" class="form-control" />
-                <span asp-validation-for="Rating" class="text-danger"></span>
-            </div>
+                <span asp-validation-for="Rating" class="text-danger"></span> 
+            </div>*@
+
+
+                @*GENRE ID*@
+                <div class="mb-3">
+                    <label asp-for="GenreId" class="control-label"></label>
+                    <select asp-for="GenreId" class="form-control" asp-items="ViewBag.GenreId">
+                        <option value="">-- Select Genre --</option>
+                    </select>
+                    <span asp-validation-for="GenreId" class="text-danger"></span>
+                </div>
+
+            
+                @*Audience Rating*@
+                <div class="mb-3">
+                    <label asp-for="AudienceRatingId" class="control-label"> Audience Rating </label>
+                    <select asp-for="AudienceRatingId" class="form-control" asp-items="ViewBag.AudienceRatingId">
+                        <option value="">-- Select Rating --</option>
+                    </select>
+                    <span asp-validation-for="AudienceRatingId" class="text-danger"></span>
+                </div>
+
+
             <div class="mb-3">
                 <label asp-for="Description" class="form-label text-white fw-bold"></label>
-                <input asp-for="Description" class="form-control" />
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="5">
+                     </textarea>
+                @* <input asp-for="Description" class="form-control" /> *@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Runtime" class="form-label text-white fw-bold"></label>
+                    <label asp-for="Runtime" class="form-label text-white fw-bold"></label> (min)
                 <input asp-for="Runtime" class="form-control" />
                 <span asp-validation-for="Runtime" class="text-danger"></span>
             </div>
@@ -48,8 +85,9 @@
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <input type="submit" value="Save" class="btn btn-danger me-3" />
+                <input type="submit" value="Save" class="btn btn-danger me-3 border-white border-1" />
             </div>
+
         </form>
     </div>
 </div>

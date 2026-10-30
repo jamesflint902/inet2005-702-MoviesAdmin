@@ -29,7 +29,39 @@
                         <li class="nav-item"> @*Button to access movies from home createed *@
                             <a class="nav-link text-light" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a>
                         </li>
+
+                        @*adding genre nav*@
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Genre" asp-action="Index">Genres</a>
+                        </li>
+
+                                                @*adding audienceRating nav*@
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="AudienceRating" asp-action="Index">Ratings</a>
+                        </li>
+
+
                     </ul>
+                    @**@
+
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Account" asp-action="Profile">@User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                    </ul>
+
                 </div>
             </div>
         </nav>

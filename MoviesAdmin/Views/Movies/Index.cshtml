@@ -5,33 +5,41 @@
 }
 
 
+@* @if (user.IsInRole("admin"){
+    
+    <p>
+        <a asp-action="Create"
+} *@
+
 <h1 class="text-white">Movies</h1>
 
 <hr class="border-light" />
 
 <div class="p-3 bg-dark text-white rounded">
-
-
+   
 <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
-</p>
+    <a asp-action="Create" class="btn btn-success border-white border-1">Create New</a>
+</p> 
 
 
 <table class="table table-dark table-striped">
     <thead>
         <tr>
             <th>
+                    <!-- Image of Trail -->
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Description)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Runtime)
             </th>
@@ -44,18 +52,24 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+
+            <td>
+               <img src="@item.ImageUrl" alt="@item.Title" class="thumbnail" />
+            </td>
+
+
             <td>
                 @Html.DisplayFor(model => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Genre)
+                @item.Genre.Title
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(model => item.Rating)
-            </td>
-            <td>
+            </td> *@
+            @* <td>
                 @Html.DisplayFor(model => item.Description)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(model => item.Runtime)
             </td>
@@ -63,9 +77,9 @@
                 @Html.DisplayFor(model => item.ReleaseDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-danger me-3">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger me-3">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger me-3">Delete</a>
+                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Details</a>
+                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Delete</a> 
             </td>
         </tr>
 }
