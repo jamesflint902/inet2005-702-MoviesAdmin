@@ -29,13 +29,13 @@
                     <!-- Image of Trail -->
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                    @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.Rating)
+            <th>
+                @Html.DisplayNameFor(model => model.AudienceRating)
             </th>
             @* <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -64,9 +64,9 @@
             <td>
                 @item.Genre.Title
             </td>
-            @*<td>
-                @Html.DisplayFor(model => item.Rating)
-            </td> *@
+            <td>
+                 @item.AudienceRating.Rating
+            </td> 
             @* <td>
                 @Html.DisplayFor(model => item.Description)
             </td> *@

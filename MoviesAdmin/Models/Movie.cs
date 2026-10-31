@@ -56,7 +56,7 @@ namespace MoviesAdmin.Models
 
         // Foreign key to Audience Rating
         [Required]
-        [Display(Prompt = "Audience Rating")]
+        [Display(Prompt = "Rating")]
         public int AudienceRatingId { get; set; }
         
         //nav prop

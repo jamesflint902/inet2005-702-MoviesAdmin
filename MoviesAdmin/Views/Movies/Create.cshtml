@@ -42,8 +42,13 @@
 
             @*GENRE ID*@
             <div class="mb-3">
-                <label asp-for="GenreId" class="control-label"></label>
-                <select asp-for="GenreId" class="form-control" asp-items="ViewBag.GenreId"></select>
+                    <label asp-for="GenreId" class="control-label">Genre</label>
+                <select asp-for="GenreId" class="form-control" asp-items="ViewBag.GenreId">
+                        <option value="" selected disabled hidden>
+                            Select Genre
+                        </option>
+                </select>
+
                 <span asp-validation-for="GenreId" class="text-danger"></span>
             </div>
 
@@ -51,7 +56,11 @@
             @*Audience Rating*@
             <div class="mb-3">
                 <label asp-for="AudienceRatingId" class="control-label"> Audience Rating </label>
-                <select asp-for="AudienceRatingId" class="form-control" asp-items="ViewBag.AudienceRatingId"></select>
+                <select asp-for="AudienceRatingId" class="form-control" asp-items="ViewBag.AudienceRatingId">
+                        <option value="" selected disabled hidden>
+                            Select Audience Rating
+                        </option>
+                </select>
                 <span asp-validation-for="AudienceRatingId" class="text-danger"></span>
             </div>
 

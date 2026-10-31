@@ -10,6 +10,7 @@
 <hr class="border-light" />
 
 <div class="p-3 bg-dark text-white rounded">
+   
 
 <p>
     <a asp-action="Create" class="btn btn-success border-white border-1">Create New</a>
@@ -20,9 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Movies)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -32,10 +33,10 @@
             <td>
                 @Html.DisplayFor(model => item.Title)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(model => item.Movies)
-            </td>
-            <td>
+            </td> *@
+            <td class="text-center">
 
 
                  <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Edit</a> 
@@ -47,3 +48,4 @@
 }
     </tbody>
 </table>
+</div>
