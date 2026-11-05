@@ -26,20 +26,35 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item"> @*Button to access movies from home createed *@
-                            <a class="nav-link text-light" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a>
-                        </li>
 
-                        @*adding genre nav*@
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Genre" asp-action="Index">Genres</a>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item"> @*Button to access movies from home createed *@
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a>
+                                </li>
 
-                                                @*adding audienceRating nav*@
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="AudienceRating" asp-action="Index">Ratings</a>
-                        </li>
+                                @*adding genre nav*@
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-controller="Genre" asp-action="Index">Genres</a>
+                                </li>
 
+                                @*adding audienceRating nav*@
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-controller="AudienceRating" asp-action="Index">Ratings</a>
+                                </li>
+                            }
+
+
+                        @if (User.IsInRole("Critic"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Movies" asp-action="Index">Movies</a>
+                                </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reviews" asp-action="Index">My Reviews</a>
+                            </li>
+                        }
 
                     </ul>
                     @**@

@@ -216,6 +216,11 @@ public class MoviesController : Controller
             .Include(m => m.Genre)
             .Include(m => m.AudienceRating)
             .FirstOrDefaultAsync(m => m.Id == id);
+
+        ViewBag.ReviewCount = await _context.Reviews
+            .CountAsync(r => r.MovieId == id && r.IsPublished);
+
+
         if (movie == null)
         {
             return NotFound();

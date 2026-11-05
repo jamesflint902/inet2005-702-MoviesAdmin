@@ -1,0 +1,85 @@
+@model IEnumerable<MoviesAdmin.Models.Review>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-white">Reviews</h1>
+
+<hr class="border-light" />
+
+<div class="mb-3">
+    <a asp-controller="Movies" asp-action="Index" class="btn btn-danger border-white">Browse Movies</a>
+</div>
+
+<div class="p-3 bg-dark text-white rounded">
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            @* <th>
+                @Html.DisplayNameFor(model => model.MovieId)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Movie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPublished)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @* <td>
+                @Html.DisplayFor(model => item.MovieId)
+            </td> *@
+            <td>
+                @Html.DisplayFor(model => item.Movie.Title)@**@
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IsPublished)
+            </td>
+            @* <td>
+                @Html.DisplayFor(model => item.CreatedBy)
+            </td> *@
+            <td>
+                @Html.DisplayFor(model => item.CreatedDate)
+            </td>
+            <td>
+                @if (!item.IsPublished)
+                {
+                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Edit</a> 
+                }
+                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Details</a> 
+                 @if (!item.IsPublished)
+                    {
+                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger me-3 border-white border-1">Delete</a> 
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
