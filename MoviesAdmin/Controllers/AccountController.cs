@@ -24,6 +24,12 @@ namespace MoviesAdmin.Controllers
             return View();
         }
 
+        // display access denied page for unauthorized users
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
         [Authorize]
         public async Task Logout()

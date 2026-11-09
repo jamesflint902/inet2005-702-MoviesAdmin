@@ -52,5 +52,23 @@ namespace MoviesAdmin.Services
             // return the URL for the saved file
             return blobClient.Uri.ToString();
         }
+
+        public async Task DeleteFileAsync(string imageUrl)
+        {
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                return;
+            }
+
+            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            Uri uri = new Uri(imageUrl);
+
+            string fileName = Path.GetFileName(uri.LocalPath);
+
+            var blobClient = containerClient.GetBlobClient(fileName);
+
+            await blobClient.DeleteIfExistsAsync();
+        }
     }
 }

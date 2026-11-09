@@ -93,16 +93,43 @@
 
 
 <div class="mt-3">
-                    @if (User.IsInRole("Critic"))
-                {
-    <a asp-controller="Reviews" asp-action="Create" asp-route-movieId="@Model.Id" class="btn btn-success border-white border-1">Create Review</a>
-                }
+
+    @if (User.IsInRole("Critic"))
+    {
+        var review = ViewBag.UserReview as Review;
+
+        @* Display review status for the logged-in critic *@
+
+        if (review == null)
+        {
+            <a asp-controller="Reviews" asp-action="Create" asp-route-movieId="@Model.Id" class="btn btn-success border-white border-1">Create Review</a>
+        }
+        else if (!review.IsPublished)
+        {
+            <a asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.Id" class="btn btn-success border-white border-1"> Continue Draft Review</a>
+        }
+        else
+        {
+            <div class="alert alert-info mt-3 mb-0">
+                You have already reviewed this movie. Visit My Reviews to see your review.
+            </div>
+        }
+    }
+
 </div>
 
 <div class="mt-3">
-                    @if (User.IsInRole("Admin"))
-                {
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-danger me-3 border-white border-1">Edit</a>
-                }
-    <a asp-action="Index" class="text-white fw-bold">Back to Movies</a>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-danger me-3 border-white border-1">Edit </a>
+    }
+
+    <a asp-action="Index" class="text-white fw-bold me-3">Back to Movies</a>
+
+    @if (User.IsInRole("Critic"))
+    {
+        <a asp-controller="Reviews" asp-action="Index" class="text-white fw-bold">Back to Reviews</a>
+    }
+
 </div>

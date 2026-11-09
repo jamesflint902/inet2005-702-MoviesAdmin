@@ -91,8 +91,27 @@
                 }
                 @if (User.IsInRole("Critic"))
                 {
-    <a asp-controller="Reviews" asp-action="Create" asp-route-movieId="@item.Id" class="btn btn-success me-3 border-white border-1"">Create Review</a>
-}
+                    var userReviews = ViewBag.UserReviews as List<Review>;
+
+                    var review = userReviews?.FirstOrDefault(r => r.MovieId == item.Id);
+
+                    @* display review status for the logged-in critic *@
+
+                        if (review == null)
+                        {
+                            <a asp-controller="Reviews" asp-action="Create" asp-route-movieId="@item.Id" class="btn btn-success border-white border-1">Create Review</a>
+                            }
+                            else if (!review.IsPublished)
+                            {
+                                <a asp-controller="Reviews" asp-action="Edit" asp-route-id="@review.Id" class="btn btn-success border-white border-1">Continue Draft Review</a>
+                            }
+                            else
+                            {
+                                <span class="text-danger fw-bold">
+                                    Already Reviewed
+                                </span>
+                            }
+                        }
             </td>
         </tr>
 }

@@ -34,6 +34,20 @@ public class MoviesController : Controller
                 .Include(m => m.AudienceRating)
                 .ToListAsync();
 
+
+        //get movies already reviewed by logged-in critic
+        var userId = User.GetUserId();
+
+        ViewBag.ReviewedMovieIds = await _context.Reviews
+            .Where(r => r.CreatedBy == userId)
+            .Select(r => r.MovieId)
+            .ToListAsync();
+
+        // get logged-in critic's reviews to display review status
+        ViewBag.UserReviews = await _context.Reviews
+            .Where(r => r.CreatedBy == userId)
+            .ToListAsync();
+
         return View(movies);
 
     }
@@ -50,10 +64,22 @@ public class MoviesController : Controller
                 .Include(m => m.Genre)
                 .Include(m => m.AudienceRating)
             .FirstOrDefaultAsync(m => m.Id == id);
+
         if (movie == null)
         {
             return NotFound();
         }
+
+        ViewBag.ReviewCount = await _context.Reviews
+            .CountAsync(r => r.MovieId == id && r.IsPublished);
+
+        // Get the logged-in critic's review for this movie
+        var userId = User.GetUserId();
+
+        ViewBag.UserReview = await _context.Reviews
+            .FirstOrDefaultAsync(r =>
+                r.MovieId == id &&
+                r.CreatedBy == userId);
 
         return View(movie);
     }
@@ -164,12 +190,41 @@ public class MoviesController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,GenreId,AudienceRatingId,Description,Runtime,ReleaseDate,ImageUrl")] Movie movie)
+    public async Task<IActionResult> Edit(int? id, [Bind("Id,Title,GenreId,AudienceRatingId,Description,Runtime,ReleaseDate,ImageUrl")] Movie movie, IFormFile? ImageFile)
     {
         if (id != movie.Id)
         {
             return NotFound();
         }
+
+        var existingMovie = await _context.Movie
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Id == movie.Id);
+
+        if (existingMovie == null)
+        {
+            return NotFound();
+        }
+
+        // Upload new image if selected
+        if (ImageFile != null)
+        {
+            var extension = Path.GetExtension(ImageFile.FileName);
+            var uniqueFileName = $"{Guid.NewGuid()}{extension}";
+
+            string imageUrl = await _blobService.UploadFileAsync(ImageFile, uniqueFileName);
+
+            // delete old poster
+            await _blobService.DeleteFileAsync(existingMovie.ImageUrl);
+
+            movie.ImageUrl = imageUrl;
+        }
+        else
+        {
+            // Keep existing image
+            movie.ImageUrl = existingMovie.ImageUrl;
+        }
+
 
         if (ModelState.IsValid)
         {
@@ -238,6 +293,7 @@ public class MoviesController : Controller
         var movie = await _context.Movie.FindAsync(id);
         if (movie != null)
         {
+            await _blobService.DeleteFileAsync(movie.ImageUrl);
             _context.Movie.Remove(movie);
         }
 

@@ -16,7 +16,7 @@
 
     <div class="col-md-12">
 
-      <form asp-action="Edit">
+            <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
@@ -30,6 +30,18 @@
                              alt="@Model.Title"
                              width="200"
                              class="rounded shadow" />
+
+                        <!-- Image Controls -->
+                        <div class="mt-3">
+                            <label for="ImageFile" class="form-label text-white fw-bold">
+                                Replace Poster Image
+                            </label>
+
+                            <input type="file"
+                                   id="ImageFile"
+                                   name="ImageFile"
+                                   class="form-control w-75" />
+                        </div>
                     </div>
 
 
@@ -96,7 +108,7 @@
             </div>
             <div class="mb-3">
                 <label asp-for="ReleaseDate" class="form-label text-white fw-bold"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
+                <input asp-for="ReleaseDate" type="date" class="form-control" />
                 <span asp-validation-for="ReleaseDate" class="text-danger"></span>
             </div>
 
