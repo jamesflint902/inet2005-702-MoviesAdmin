@@ -190,7 +190,8 @@ namespace MoviesAdmin.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
@@ -206,6 +207,24 @@ namespace MoviesAdmin.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("MoviesAdmin.Models.UserSnapshot", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserSnapshot");
                 });
 
             modelBuilder.Entity("MoviesAdmin.Models.Movie", b =>

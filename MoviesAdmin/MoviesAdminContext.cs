@@ -15,6 +15,8 @@ namespace MoviesAdmin.Data
         public DbSet<AudienceRating> AudienceRatings { get; set; } = default;
         public DbSet<Review> Reviews { get; set; } = default;
 
+        public DbSet<UserSnapshot> UserSnapshot { get; set; } = default;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Movie>()

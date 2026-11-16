@@ -35,7 +35,7 @@ public class MoviesController : Controller
                 .ToListAsync();
 
 
-        //get movies already reviewed by logged-in critic
+        //get movies already reviewed by loggedin critic
         var userId = User.GetUserId();
 
         ViewBag.ReviewedMovieIds = await _context.Reviews
@@ -43,7 +43,7 @@ public class MoviesController : Controller
             .Select(r => r.MovieId)
             .ToListAsync();
 
-        // get logged-in critic's reviews to display review status
+        // get logged in critics reviews to display review status
         ViewBag.UserReviews = await _context.Reviews
             .Where(r => r.CreatedBy == userId)
             .ToListAsync();
@@ -293,6 +293,7 @@ public class MoviesController : Controller
         var movie = await _context.Movie.FindAsync(id);
         if (movie != null)
         {
+            //delete old poster aswell
             await _blobService.DeleteFileAsync(movie.ImageUrl);
             _context.Movie.Remove(movie);
         }
@@ -307,16 +308,16 @@ public class MoviesController : Controller
     }
 
 
-    public IActionResult DebugClaims()
-    {
-        var claims = string.Join("<br>",
-            User.Claims.Select(c => $"{c.Type}: {c.Value}"));
+    //public IActionResult DebugClaims()
+    //{
+    //    var claims = string.Join("<br>",
+    //        User.Claims.Select(c => $"{c.Type}: {c.Value}"));
 
-        return Content(claims, "text/html");
-    }
+    //    return Content(claims, "text/html");
+    //}
 
-    public IActionResult TestRole()
-    {
-        return Content(User.IsInRole("Admin").ToString());
-    }
+//    public IActionResult TestRole()
+//    {
+//        return Content(User.IsInRole("Admin").ToString());
+//    }
 }

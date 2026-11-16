@@ -1,11 +1,13 @@
+using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect; 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MoviesAdmin.Data;
 using MoviesAdmin.Services;
-using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect; 
+using System.Security.Claims;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,15 +15,40 @@ var connectionString = builder.Configuration.GetConnectionString("MoviesAdminCon
 
 builder.Services.AddDbContext<MoviesAdminContext>(options => options.UseSqlServer(connectionString));
 
-// Start Auth0
+// Register services
+builder.Services.AddScoped<UserSnapshotService, UserSnapshotService>();
+
+// Auth0
 builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
     options.ClientId = builder.Configuration["Auth0:ClientId"];
     options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+    options.Scope = "openid profile email";
+
+    options.OpenIdConnectEvents = new OpenIdConnectEvents
+    {
+        OnTokenValidated = async context =>
+        {
+            var principal = context.Principal!;
+
+            var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+            var name = principal.Identity?.Name;
+
+            if (string.IsNullOrEmpty(userId))
+                return;
+
+            var syncService = context.HttpContext.RequestServices
+                .GetRequiredService<UserSnapshotService>();
+
+            await syncService.AddUserAsync(userId, email, name);
+        }
+    };
 });
 
-//redirect users to custom page when do not have permission
+
+//redirect users to custom page when not have permission
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Account/AccessDenied";
@@ -33,7 +60,6 @@ builder.Services.Configure<OpenIdConnectOptions>(Auth0Constants.AuthenticationSc
     {
         NameClaimType = "name",
         RoleClaimType = "https://localhost:7252/roles"
-        // change to your app's domain
     };
 });
 
